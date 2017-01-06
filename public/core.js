@@ -1,39 +1,42 @@
-var scotchTodo = angular.module('scotchTodo',[]);
+var scotchTodo = angular.module('scotchTodo', []);
 
-// controller!
 function mainController($scope, $http) {
-  $scope.formData={};
-  // 페이지에 랜딩하면 todo를 띄워줘야지!
-  $http.get('/api/todos')
-    .success(function(data){
-      $scope.todos= data;
-      console.log(data);
-    });
-    .error(function(data){
-      console.log('ERROR: '+data);
-    });
-  //만들자 todo
-  $scope.createTodo= function(){
-    $http.post('/api/todos',$scope.formData)
-      .success(function(data){
-        $scope.formData={}; // clear the form data;
-        $scope.todos = data;
-        console.log(data);
-      });
-      .error(function(data){
-        console.log('ERROR: '+data);
-      });
+	$scope.formData = {};
 
-  };
-  //todo를 주깁시다
-  $scope.deleteTodo = function(id){
-    $http.delete('/api/todos/'+id)
-      .success(function(data){
-        $scope.todos = data;
+	// when landing on the page, get all todos and show them
+	$http.get('/api/todos')
+		.success(function(data) {
+      console.log(data);
+			$scope.todos = data;
+		})
+		.error(function(data) {
+			console.log('Error: ' + data);
+		});
+
+	// when submitting the add form, send the text to the node API
+	$scope.createTodo = function() {
+		$http.post('/api/todos', $scope.formData)
+			.success(function(data) {
+				$scope.formData = {}; // clear the form so our user is ready to enter another
         console.log(data);
-      });
-      .error(function(data){
-        console.log('ERROR: '+data);
-      });
-  };
-};
+				$scope.todos = data;
+
+			})
+			.error(function(data) {
+				console.log('Error: ' + data);
+			});
+	};
+
+	// delete a todo after checking it
+	$scope.deleteTodo = function(id) {
+		$http.delete('/api/todos/' + id)
+			.success(function(data) {
+        console.log(data);
+				$scope.todos = data;
+
+			})
+			.error(function(data) {
+				console.log('Error: ' + data);
+			});
+	};
+}
