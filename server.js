@@ -63,7 +63,10 @@ var mysql = require('mysql');
           });
         });
 
-
+//프론트로 가자!
+app.get('*',function(req,res){
+  res.sendfile('./public/index.html');
+});
 
 
 //listen
