@@ -39,4 +39,13 @@ function mainController($scope, $http) {
 				console.log('Error: ' + data);
 			});
 	};
+	// when landing on the page, get all todos and show them
+	$http.get('/api/count')
+		.success(function(data) {
+			console.log(data);
+			$scope.count = data;
+		})
+		.error(function(data) {
+			console.log('Error: ' + data);
+		});
 }

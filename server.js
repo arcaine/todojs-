@@ -24,6 +24,9 @@ var mysql = require('mysql');
     app.use(bodyParser.json({type: 'application/vnd.api+json'}));
     app.use(methodOverride());
 
+    //cookieParser 모듈에 담기
+    var cookieParser = require('cookie-parser');
+    app.use(cookieParser('fsdfsdfweerewr'));
 
     //api
       //get all todos
@@ -62,6 +65,17 @@ var mysql = require('mysql');
             }
           });
         });
+        //방문 counting(cookie로)
+app.get('/api/count',function(req,res){
+  if(req.signedCookies.count){
+    var count =parseInt(req.signedCookies.count);
+  } else{
+    var count = 0 ;
+  }
+  count = count+1;
+  res.cookie('count',count,{signed: true});
+  res.json(count);
+});
 
 //프론트로 가자!
 app.get('*',function(req,res){
