@@ -5,6 +5,16 @@ var app = express();
 var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
 var mysql = require('mysql');
+
+//세션 정보 파일로 저장
+var session = require('express-session')
+var FileStore = require('session-file-store')(session);
+//passport.js
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+var FacebookStrategy = require('passport-facebook').Strategy;
+
+
 // 기본 설정
 
     // Mysql 별도 연동하기.. ㅜㅜ
@@ -27,6 +37,19 @@ var mysql = require('mysql');
     //cookieParser 모듈에 담기
     var cookieParser = require('cookie-parser');
     app.use(cookieParser('fsdfsdfweerewr'));
+
+    //session과 passport
+    var app =express();
+    app.use(session({
+      secret : '111',
+      resave : false,
+      saveUninitialized:true,
+      store : new FileStore()
+    }));
+    app.use(passport.initialize()); //초기화후 시작
+    app.use(passport.session()); // 인증시 세션 사용 세션 사용코드보다 뒤쪽이어야 함
+
+
 
     //api
       //get all todos
@@ -76,6 +99,61 @@ app.get('/api/count',function(req,res){
   res.cookie('count',count,{signed: true});
   res.json(count);
 });
+
+
+//세션
+// 세션마다 한사람이 done(null, 유저네임)이 저장됨
+passport.serializeUser(function(user, done) {
+  console.log('serialsuccess2',user)
+  done(null, user.authId);
+});
+
+// id 값을 기준으로 사용자를 검색하는 작업을 함
+passport.deserializeUser(function(id, done) {
+  for(var i=0;i<users.length;i++){
+    var user = users[i];
+    if(user.authId === id){
+      return done(null,user);
+    }
+  }
+  done('There is no user');
+});
+
+//로컬 전략을 만듬 -> 객체를 만듬
+passport.use(new LocalStrategy(
+  function(username, password, done){
+    var uname = username;
+    var pwd = password;
+    for(var i=0; i < users.length; i++){
+        var user =users[i];
+        if(uname === user.username && pwd === user.password){
+          console.log('success1'+user)
+          done(null,user);
+        }else{
+          done(null,false);
+        }
+      }
+    done(null,false);
+  }
+));
+
+//api/auth
+app.get('api/auth',function(req,res){
+  res.json(req.user);
+});
+
+app.post(
+  '/auth/login',
+  passport.authenticate(
+    'local',
+    {
+      successRedirect :'/welcome',//성공시 리다이렉트
+      failureRedirect :'/auth/login',
+      failureFlash : false
+    }
+  )
+);
+
 
 //프론트로 가자!
 app.get('*',function(req,res){

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
     <title>Angular|TodoMVC</title>
-
+    <link rel="stylesheet" href="style.css">
     <!-- SCROLLS -->
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"><!-- load bootstrap -->
     <style>
@@ -20,7 +20,28 @@
     <script src="../node_modules/angular/angular.js"></script>
   </head>
   <body ng-controller="mainController">
-    <div class="container">
+    <header class="header">
+      <div class="container">
+        <div class="login">
+          <div class="login_container">Log in</div>
+          <div class="login_extended main-login-form">
+            <div class="login-group">
+              <form action="" method="post">
+                <div class="form-group">
+                  <label for="username">유저 네임</label>
+                  <input type="text" name="username" placeholder="ID" />
+                </div>
+                <div class="form-groups">
+                  <label for="password">비밀번호</label>
+                  <input type="password" name="password" placeholder="Password" />
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </form>
+            </div>  
+    </header>
+
+        </div>
+      </div>
       <!-- header랑 todo counter 넣는곳 -->
       <div class="jumbotron text-center">
         <h1>I'm a todo-aholic <span class="label label-info">{{todos.length}}</span></h1>
@@ -57,6 +78,15 @@
       </div>
       </div>
     </div>
+
+<script type="text/javascript">
+$(".login_container").click(function(){
+  $(".login_extended").slideToggle(400);
+},
+function(){
+  $(".login_extended").slideToggle(400);
+});
+</script>
 
   </body>
 </html>

@@ -1,0 +1,23 @@
+.header{
+  text-align:right;
+  top:2em;
+  width: 100%;
+  z-index: 10001;
+  position: absolute;
+  height:3.25em;
+}
+.login_container{
+  padding-right:0px;
+  display: inline-block;
+  padding: 0 0,75em;
+}
+.login_extended{
+  display:none;
+  background-color: rgba(222,222,222,0.5);
+  border:1px solid red;
+  width:250px;
+  text-align: right;
+}
+.login{
+  text-align:right;
+}

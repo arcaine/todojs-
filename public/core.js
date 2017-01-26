@@ -39,7 +39,7 @@ function mainController($scope, $http) {
 				console.log('Error: ' + data);
 			});
 	};
-	// when landing on the page, get all todos and show them
+	// 들어온 횟수 세기
 	$http.get('/api/count')
 		.success(function(data) {
 			console.log(data);
